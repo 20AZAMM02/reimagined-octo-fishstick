@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Coin Catcher</title>
+<style>
+    body { margin: 0; overflow: hidden; background: #111; }
+    canvas { display: block; margin: 0 auto; background: #1d1d1d; }
+</style>
+</head>
+<body>
+
+<canvas id="game"></canvas>
+
+<script>
+// CANVAS
+const canvas = document.getElementById("game");
+const ctx = canvas.getContext("2d");
+
+canvas.width = 400;
+canvas.height = 600;
+
+// PLAYER
+let player = {
+    x: 180,
+    y: 550,
+    w: 40,
+    h: 20,
+    speed: 6
+};
+
+// OBJECTS
+let coins = [];
+let score = 0;
+let timeLeft = 30;
+
+// SPAWN COINS
+function spawnCoin() {
+    coins.push({
+        x: Math.random() * 380,
+        y: -20,
+        r: 10,
+        speed: 2 + Math.random() * 4
+    });
+}
+
+setInterval(spawnCoin, 600);
+
+// PLAYER MOVE
+document.addEventListener("mousemove", (e) => {
+    let rect = canvas.getBoundingClientRect();
+    player.x = e.clientX - rect.left - player.w / 2;
+});
+
+// UPDATE
+function update() {
+    coins.forEach(c => {
+        c.y += c.speed;
+
+        // Catch
+        if (c.y > player.y &&
+            c.x > player.x &&
+            c.x < player.x + player.w) {
+            score++;
+            c.y = 700;
+        }
+    });
+
+    coins = coins.filter(c => c.y < 620);
+}
+
+// DRAW
+function draw() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    // Player
+    ctx.fillStyle = "#00eaff";
+    ctx.fillRect(player.x, player.y, player.w, player.h);
+
+    // Coins
+    ctx.fillStyle = "yellow";
+    coins.forEach(c => {
+        ctx.beginPath();
+        ctx.arc(c.x, c.y, c.r, 0, Math.PI * 2);
+        ctx.fill();
+    });
+
+    // Score and Time
+    ctx.fillStyle = "white";
+    ctx.font = "22px Arial";
+    ctx.fillText("Score: " + score, 10, 30);
+
+    ctx.fillStyle = "orange";
+    ctx.fillText("Time: " + timeLeft, 300, 30);
+}
+
+// GAME TIMER
+setInterval(() => {
+    if (timeLeft > 0) timeLeft--;
+}, 1000);
+
+// GAME LOOP
+function loop() {
+    if (timeLeft > 0) {
+        update();
+    }
+    draw();
+    requestAnimationFrame(loop);
+}
+
+loop();
+</script>
+
+</body>
+</html>
