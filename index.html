@@ -1,115 +1,212 @@
 <!DOCTYPE html>
-<html>
+<html lang="ky">
 <head>
-<meta charset="UTF-8">
-<title>Coin Catcher</title>
-<style>
-    body { margin: 0; overflow: hidden; background: #111; }
-    canvas { display: block; margin: 0 auto; background: #1d1d1d; }
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Той KG — Той кызматтары</title>
+    <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
 
-<canvas id="game"></canvas>
+    <!-- HEADER -->
+    <header>
+        <div class="logo">ТОЙ KG</div>
 
-<script>
-// CANVAS
-const canvas = document.getElementById("game");
-const ctx = canvas.getContext("2d");
+        <nav>
+            <a href="#home">Башкы бет</a>
+            <a href="#services">Кызматтар</a>
+            <a href="#about">Биз жөнүндө</a>
+            <a href="#contact">Байланыш</a>
+        </nav>
+    </header>
 
-canvas.width = 400;
-canvas.height = 600;
 
-// PLAYER
-let player = {
-    x: 180,
-    y: 550,
-    w: 40,
-    h: 20,
-    speed: 6
-};
+    <!-- HERO -->
+    <section id="home" class="hero">
 
-// OBJECTS
-let coins = [];
-let score = 0;
-let timeLeft = 30;
+        <div class="hero-content">
+            <p class="small-title">ТОЙУҢУЗ ҮЧҮН БАРДЫГЫ БИР ЖЕРДЕ</p>
 
-// SPAWN COINS
-function spawnCoin() {
-    coins.push({
-        x: Math.random() * 380,
-        y: -20,
-        r: 10,
-        speed: 2 + Math.random() * 4
-    });
-}
+            <h1>
+                Тойуңузду<br>
+                <span>өзгөчө</span> кылалы
+            </h1>
 
-setInterval(spawnCoin, 600);
+            <p class="description">
+                Видео тартуу, монтаж, фотограф жана
+                заманбап онлайн чакыруу кызматтары.
+            </p>
 
-// PLAYER MOVE
-document.addEventListener("mousemove", (e) => {
-    let rect = canvas.getBoundingClientRect();
-    player.x = e.clientX - rect.left - player.w / 2;
-});
+            <div class="buttons">
+                <a href="#services" class="main-btn">
+                    Кызматтарды көрүү
+                </a>
 
-// UPDATE
-function update() {
-    coins.forEach(c => {
-        c.y += c.speed;
+                <a href="#contact" class="second-btn">
+                    Заказ берүү
+                </a>
+            </div>
+        </div>
 
-        // Catch
-        if (c.y > player.y &&
-            c.x > player.x &&
-            c.x < player.x + player.w) {
-            score++;
-            c.y = 700;
-        }
-    });
+    </section>
 
-    coins = coins.filter(c => c.y < 620);
-}
 
-// DRAW
-function draw() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    <!-- SERVICES -->
+    <section id="services" class="services">
 
-    // Player
-    ctx.fillStyle = "#00eaff";
-    ctx.fillRect(player.x, player.y, player.w, player.h);
+        <p class="section-small">БИЗ СУНУШТАЙБЫЗ</p>
 
-    // Coins
-    ctx.fillStyle = "yellow";
-    coins.forEach(c => {
-        ctx.beginPath();
-        ctx.arc(c.x, c.y, c.r, 0, Math.PI * 2);
-        ctx.fill();
-    });
+        <h2>Биздин кызматтар</h2>
 
-    // Score and Time
-    ctx.fillStyle = "white";
-    ctx.font = "22px Arial";
-    ctx.fillText("Score: " + score, 10, 30);
+        <div class="service-container">
 
-    ctx.fillStyle = "orange";
-    ctx.fillText("Time: " + timeLeft, 300, 30);
-}
+            <div class="service-card">
+                <div class="icon">🎥</div>
+                <h3>Видеооператор</h3>
+                <p>
+                    Тойуңуздун эң маанилүү көз ирмемдерин
+                    сапаттуу видео кылып сактайбыз.
+                </p>
+                <button onclick="orderService('Видеооператор')">
+                    Заказ берүү
+                </button>
+            </div>
 
-// GAME TIMER
-setInterval(() => {
-    if (timeLeft > 0) timeLeft--;
-}, 1000);
 
-// GAME LOOP
-function loop() {
-    if (timeLeft > 0) {
-        update();
-    }
-    draw();
-    requestAnimationFrame(loop);
-}
+            <div class="service-card">
+                <div class="icon">✂️</div>
+                <h3>Видео монтаж</h3>
+                <p>
+                    Той видеолоруңузду кооз музыка,
+                    эффект жана өтмөлөр менен монтаждайбыз.
+                </p>
+                <button onclick="orderService('Видео монтаж')">
+                    Заказ берүү
+                </button>
+            </div>
 
-loop();
-</script>
+
+            <div class="service-card">
+                <div class="icon">💌</div>
+                <h3>Онлайн чакыруу</h3>
+                <p>
+                    Тойго арналган заманбап жана кооз
+                    онлайн чакыруу баракчасын жасайбыз.
+                </p>
+                <button onclick="orderService('Онлайн чакыруу')">
+                    Заказ берүү
+                </button>
+            </div>
+
+
+            <div class="service-card">
+                <div class="icon">📸</div>
+                <h3>Фотосъёмка</h3>
+                <p>
+                    Тойдун өзгөчө учурларын сапаттуу
+                    сүрөттөргө айландырабыз.   <p>  Акчасы-Келишим түрдө </p>
+                </p>
+                <button onclick="orderService('Фотосъёмка')">
+                    Заказ берүү
+                </button>
+            </div>
+
+
+            <div class="service-card">
+                <div class="icon">🎬</div>
+                <h3>Видео-чакыруу</h3>
+                <p>
+                    Конокторуңузга жөнөтүү үчүн
+                    өзгөчө видео чакыруу даярдайбыз.
+                </p>
+                <button onclick="orderService('Видео-чакыруу')">
+                    Заказ берүү
+                </button>
+            </div>
+
+
+            <div class="service-card">
+                <div class="icon">📱</div>
+                <h3>Reels / TikTok</h3>
+                <p>
+                    Тойдон кыска жана кызыктуу
+                    видеолорду социалдык тармактарга даярдайбыз.
+                </p>
+                <button onclick="orderService('Reels / TikTok монтаж')">
+                    Заказ берүү
+                </button>
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- ABOUT -->
+    <section id="about" class="about">
+
+        <div>
+            <p class="section-small">ЭМНЕ ҮЧҮН БИЗ?</p>
+
+            <h2>
+                Тойуңуздун эсте каларлык
+                көз ирмемдери
+            </h2>
+
+            <p>
+                Биз тойлор үчүн заманбап санариптик
+                кызматтарды сунуштайбыз.
+            </p>
+
+            <p>
+                Сиз кызматты тандап, заказ берип,
+                WhatsApp аркылуу түз байланышсаңыз болот.
+            </p>
+        </div>
+
+    </section>
+
+
+    <!-- CONTACT -->
+    <section id="contact" class="contact">
+
+        <p class="section-small">ЗАКАЗ БЕРҮҮ</p>
+
+        <h2>Биз менен байланышыңыз</h2>
+
+        <p>
+            Керектүү кызматты тандап, WhatsApp аркылуу
+            бизге жазыңыз.
+        </p>
+
+        <a
+            href="https://wa.me/996700000000"
+            target="_blank"
+            class="whatsapp">
+            💬 WhatsApp аркылуу заказ берүү
+        </a>
+
+    </section>
+
+
+    <!-- FOOTER -->
+    <footer>
+        <p>© 2026 Той KG. Бардык укуктар корголгон.</p>
+    </footer>
+
+
+    <script src="script.js"></script>
+
+
+
+
+
+    <button onclick="showInfo('Видеооператор')">
+    Заказ берүү
+</button>
+
+
 
 </body>
 </html>
